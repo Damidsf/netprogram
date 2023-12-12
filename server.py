@@ -24,7 +24,7 @@ def menu(sock, Users_message):
             Public_chat(sock, Users_message, text_list)
         if int(text_list[0]) == 4:
             # 私聊
-            Private_chat(sock, Users_message, text_list)
+            Private_chat(sock, Users_message, text_list,address)
         if int(text_list[0]) == 5:
             # 退出
             Exit(sock, Users_message, text_list)
@@ -62,15 +62,15 @@ def Login(sock, Users_message, text_list, address):
 def Public_chat(sock, Users_message, text_list):
     name = text_list[1]
     message = text_list[3]
-    data = ('公聊消息 - [' + name + ']:' + message)
-    for user in Users_message.keys():
-        if user != name:
-          sock.sendto(data.encode('ascii'), Users_message[user][1])
+    data = ('[' + name + ']:' + message)
+    # for user in Users_message.keys():
+    #     if user != name:
+    #       sock.sendto(data.encode('ascii'), Users_message[user][1])
     print('[' + str(datetime.datetime.now()) + ']' + '[' + name + ']:' + message)
 
 
 # 私聊
-def Private_chat(sock, Users_message, text_list):
+def Private_chat(sock, Users_message, text_list,address):
     name = text_list[1]
     message = text_list[3]
     Destination = text_list[4]
@@ -80,9 +80,11 @@ def Private_chat(sock, Users_message, text_list):
             flag = True
             data = ('[' + name + ']:' + message)
             sock.sendto(data.encode('ascii'), Users_message[user][1])
-            #print('[' + str(datetime.datetime.now()) + ']' + '[' + name + ']' + ' to [' + Destination + ']: ' + message)
+            print(f"{name}私聊发送成功")
     if not flag:
-        print("私聊消息发送失败")
+        print(f"{name}私聊发送失败")
+
+
 
 
 

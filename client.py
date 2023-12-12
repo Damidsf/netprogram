@@ -21,7 +21,7 @@ def Person_Message(sock, choice):
 
 # 将用户聊天信息传送给公共频道
 def Chat_Message(sock, name, address):
-    print('请输入聊天内容:\n\n(输入 \033[1;44mExit\033[0m 退出,\n'
+    print(f'欢迎您: {name} 请输入聊天内容:\n\n(输入 \033[1;44mExit\033[0m 退出,\n'
           '输入 \033[1;44ms/用户名/消息\033[0m 私聊)\t\t\t消息历史:')
     # 创建进程，父进程发送消息，子进程接受消息
     p = Process(target=rcvmsg, args=(sock, name, address))
@@ -36,7 +36,7 @@ def sendmsg(sock, name, address):
         Words = message.split('/')
 
         if Words[0] == 's':
-            if (len(Words) <= 2):
+            if len(Words) <= 2:
                 print("请输入正确的私聊格式")
                 continue
             Destination = Words[1]
@@ -44,7 +44,6 @@ def sendmsg(sock, name, address):
             text = '4' + '  ' + name + '  ' + str(address) + '  ' + true_message + '  ' + Destination
             data = text.encode('ascii')
             sock.sendto(data, (ADDRESS, PORT))
-            print('OK!')
         elif message == 'Exit':
             text = '5' + '  ' + name + '  ' + str(address)
             data = text.encode('ascii')
