@@ -10,7 +10,7 @@ PORT = 1600
 def menu(sock, Users_message):
     while True:
         data, address = sock.recvfrom(MAX_BYTES)
-        print(data,address)
+        #print(data,address)
         text_list = data.decode('ascii').split('  ')
 
         if int(text_list[0]) == 1:
@@ -36,11 +36,11 @@ def Register(sock, Users_message, text_list, address):
     password = text_list[2]
     if name in Users_message.keys():
         sock.sendto('Error_UserExist'.encode('ascii'), address)
-        print(Users_message)
+        #print(Users_message)
     else:
         Users_message[name] = [password, address]
-        print(Users_message[name])
-        print(name + ' is enter the room')
+        #print(Users_message[name])
+        print(name + ' 成功进入房间')
         sock.sendto('OK'.encode('ascii'), address)
 
 
@@ -51,7 +51,7 @@ def Login(sock, Users_message, text_list, address):
     if name in Users_message.keys():
         if Users_message[name][0] == password:
             sock.sendto('OK'.encode('ascii'), address)
-            print(name + ' is enter the room\n')
+            print(name + ' 成功进入房间\n')
         else:
             sock.sendto('Error_PasswordError'.encode('ascii'), address)
     else:
@@ -61,38 +61,41 @@ def Login(sock, Users_message, text_list, address):
 # 公聊
 def Public_chat(sock, Users_message, text_list):
     name = text_list[1]
-    # address = text_list[2]
     message = text_list[3]
-    data = ('[' + name + ']:' + message)
+    data = ('公聊消息 - [' + name + ']:' + message)
     for user in Users_message.keys():
         if user != name:
-            sock.sendto(data.encode('ascii'), Users_message[user][1])
+          sock.sendto(data.encode('ascii'), Users_message[user][1])
     print('[' + str(datetime.datetime.now()) + ']' + '[' + name + ']:' + message)
 
 
 # 私聊
 def Private_chat(sock, Users_message, text_list):
     name = text_list[1]
-    # address = text_list[2]
     message = text_list[3]
     Destination = text_list[4]
-    data = ('[' + name + ']:' + message)
+    flag = False
     for user in Users_message.keys():
         if user == Destination:
+            flag = True
+            data = ('[' + name + ']:' + message)
             sock.sendto(data.encode('ascii'), Users_message[user][1])
-            print('[' + str(datetime.datetime.now()) + ']' + '[' + name + ']' + ' to [' + Destination + ']: ' + message)
+            #print('[' + str(datetime.datetime.now()) + ']' + '[' + name + ']' + ' to [' + Destination + ']: ' + message)
+    if not flag:
+        print("私聊消息发送失败")
+
 
 
 # 退出程序
 def Exit(sock, Users_message, text_list):
     name = text_list[1]
     address = text_list[2]
-    print(address)
+    #print(address)
     data = 'exit'
     for user in Users_message.keys():
         if name == user:
             sock.sendto(data.encode('ascii'), Users_message[user][1])
-            print(name + ' is quit the room\n')
+            print(name + ' 成功退出房间\n')
 
 
 # 套接字连接

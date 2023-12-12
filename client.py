@@ -10,8 +10,8 @@ PORT = 1600
 
 # 将注册或者登陆信息打包发送给服务器端
 def Person_Message(sock, choice):
-    name = input('please input name:')
-    password = input('please input password:')
+    name = input('请输入用户名:')
+    password = input('请输入密码:')
     text = str(choice) + '  ' + name + '  ' + password
     data = text.encode('ascii')
     sock.sendto(data, (ADDRESS, PORT))
@@ -21,8 +21,8 @@ def Person_Message(sock, choice):
 
 # 将用户聊天信息传送给公共频道
 def Chat_Message(sock, name, address):
-    print('Please enter the chat content:\n\n(input \033[1;44mExit\033[0m to quit the room,\n'
-          'input \033[1;44ms/name/message\033[0m for Private chat)\t\t\tHistory:')
+    print('请输入聊天内容:\n\n(输入 \033[1;44mExit\033[0m 退出,\n'
+          '输入 \033[1;44ms/用户名/消息\033[0m 私聊)\t\t\t消息历史:')
     # 创建进程，父进程发送消息，子进程接受消息
     p = Process(target=rcvmsg, args=(sock, name, address))
     p.start()
@@ -34,7 +34,11 @@ def sendmsg(sock, name, address):
     while True:
         message = input()
         Words = message.split('/')
+
         if Words[0] == 's':
+            if (len(Words) <= 2):
+                print("请输入正确的私聊格式")
+                continue
             Destination = Words[1]
             true_message = Words[2]
             text = '4' + '  ' + name + '  ' + str(address) + '  ' + true_message + '  ' + Destination
