@@ -16,7 +16,6 @@ MAX_BYTES = 65535
 ADDRESS = "127.0.0.1"
 PORT = 1600
 
-
 # 选项菜单
 def menu(sock, Users_message):
     while True:
