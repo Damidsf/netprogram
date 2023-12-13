@@ -73,9 +73,9 @@ def Public_chat(sock, Users_message, text_list):
     name = text_list[1]
     message = text_list[3]
     data = "[" + name + "]:" + message
-    # for user in Users_message.keys():
-    #     if user != name:
-    #       sock.sendto(data.encode('ascii'), Users_message[user][1])
+    for user in Users_message.keys():
+        if user != name:
+          sock.sendto(data.encode('ascii'), Users_message[user][1])
     print("[" + str(datetime.datetime.now()) + "]" + "[" + name + "]:" + message)
 
 
@@ -112,7 +112,9 @@ def main():
     # 用户信息存在字典中，实现可持久化存储可将用户信息写入txt等文本内
     Users_message = {}
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # UDP Socket
     sock.bind((ADDRESS, PORT))
+    # socket listen to (ADDRESS,PORT) ipv4
     print("listen to {}".format(sock.getsockname()))
     menu(sock, Users_message)
 
