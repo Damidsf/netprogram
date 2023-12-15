@@ -72,7 +72,7 @@ def Login(sock, Users_message, text_list, address):
 def Public_chat(sock, Users_message, text_list):
     name = text_list[1]
     message = text_list[3]
-    data = "[" + name + "]:" + message
+    data = "public-[" + name + "]:" + message
     for user in Users_message.keys():
         if user != name:
           sock.sendto(data.encode('ascii'), Users_message[user][1])
@@ -88,7 +88,7 @@ def Private_chat(sock, Users_message, text_list, address):
     for user in Users_message.keys():
         if user == Destination:
             flag = True
-            data = "[" + name + "]:" + message
+            data = "private-[" + name + "]:" + message
             sock.sendto(data.encode("ascii"), Users_message[user][1])
             print(f"{name}私聊发送成功")
     if not flag:
