@@ -61,6 +61,7 @@ def Login(sock, Users_message, text_list, address):
     if name in Users_message.keys():
         if Users_message[name][0] == password:
             sock.sendto("OK".encode("ascii"), address)
+            Users_message[name] = [password, address]
             print(name + " 成功进入房间\n")
         else:
             sock.sendto("Error_PasswordError".encode("ascii"), address)

@@ -16,7 +16,8 @@ from multiprocessing import Process
 import os
 
 MAX_BYTES = 65535
-ADDRESS = "127.0.0.1"
+ADDRESS = "192.168.28.133"
+# ADDRESS = "127.0.0.1"
 PORT = 1600
 
 
@@ -56,17 +57,19 @@ def sendmsg(sock, name, address):
             Destination = Words[1]
             true_message = Words[2]
             text = (
-                "4"
-                + "  "
-                + name
-                + "  "
-                + str(address)
-                + "  "
-                + true_message
-                + "  "
-                + Destination
+                    "4"
+                    + "  "
+                    + name
+                    + "  "
+                    + str(address)
+                    + "  "
+                    + true_message
+                    + "  "
+                    + Destination
             )
             data = text.encode("ascii")
+            text_list = text.split("  ")
+            print("\t\t\t\t\t\t" + "privateTo-"+Words[1]+"-[" + text_list[1] + "]:" + text_list[3])
             sock.sendto(data, (ADDRESS, PORT))
         elif message == "Exit":
             text = "5" + "  " + name + "  " + str(address)
@@ -76,6 +79,8 @@ def sendmsg(sock, name, address):
         else:
             text = "3" + "  " + name + "  " + str(address) + "  " + message
             data = text.encode("ascii")
+            text_list = text.split("  ")
+            print("\t\t\t\t\t\t" + "public-[" + text_list[1] + "]:" + text_list[3])
             sock.sendto(data, (ADDRESS, PORT))
 
 
